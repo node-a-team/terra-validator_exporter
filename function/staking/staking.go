@@ -1,24 +1,22 @@
 package staking
 
 import (
-        t "github.com/node-a-team/terra-validator_exporter/types"
+	t "terra-validator_exporter/types"
 
-        "os/exec"
-        "encoding/json"
+	"encoding/json"
+	"os/exec"
 	"strconv"
 )
 
-
-var (
-)
+var ()
 
 func GetStakingPool() (notBondedTokens float64, bondedTokens float64) {
 
 	var stakingPoolStatus t.StakingPool
 
-	cmd := "curl -s " +t.RestServer +"/staking/pool"
-        out, _ := exec.Command("/bin/bash", "-c", cmd).Output()
-        json.Unmarshal(out, &stakingPoolStatus)
+	cmd := "curl -s " + t.RestServer + "/staking/pool"
+	out, _ := exec.Command("/bin/bash", "-c", cmd).Output()
+	json.Unmarshal(out, &stakingPoolStatus)
 
 	notBondedTokens, _ = strconv.ParseFloat(stakingPoolStatus.Not_bonded_tokens, 64)
 	bondedTokens, _ = strconv.ParseFloat(stakingPoolStatus.Bonded_tokens, 64)
@@ -26,4 +24,3 @@ func GetStakingPool() (notBondedTokens float64, bondedTokens float64) {
 	return notBondedTokens, bondedTokens
 
 }
-

@@ -1,29 +1,31 @@
 package validators
 
 import (
-        t "github.com/node-a-team/terra-validator_exporter/types"
-
-        "os/exec"
-        "encoding/json"
+	"encoding/json"
+	"os/exec"
+	utils "terra-validator_exporter/function/utils"
+	t "terra-validator_exporter/types"
 )
 
+var ()
 
-var (
-)
-
-func ValidatorDelegatorNumber(operatorAddr string) int64 {
+func ValidatorDelegatorNumber(operatorAddr string, accountAddr string) (delegatorCount float64, selfDelegationAmount float64) {
 
 	var validatorDelegationStatus []t.ValidatorDelegationStatus
-	var result int64
 
-        cmd := "curl -s -XGET " +t.RestServer +"/staking/validators/"+operatorAddr +"/delegations"  +" -H \"accept:application/json\""
-        out, _ := exec.Command("/bin/bash", "-c", cmd).Output()
-        json.Unmarshal(out, &validatorDelegationStatus)
+	delegatorCount, selfDelegationAmount = 0.0, 0.0
 
-	result = int64(len(validatorDelegationStatus))
+	cmd := "curl -s -XGET " + t.RestServer + "/staking/validators/" + operatorAddr + "/delegations" + " -H \"accept:application/json\""
+	out, _ := exec.Command("/bin/bash", "-c", cmd).Output()
+	json.Unmarshal(out, &validatorDelegationStatus)
 
+	delegatorCount = float64(len(validatorDelegationStatus))
 
-	return result
+	for _, value := range validatorDelegationStatus {
+		if value.Delegator_Address == accountAddr {
+			selfDelegationAmount = utils.StringToFloat64(value.Shares)
+		}
+	}
+
+	return delegatorCount, selfDelegationAmount
 }
-
-

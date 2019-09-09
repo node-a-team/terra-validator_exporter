@@ -1,33 +1,29 @@
 package block
 
 import (
-        t "github.com/node-a-team/terra-validator_exporter/types"
-	keyutil "github.com/node-a-team/terra-validator_exporter/function/keyutil"
+	keyutil "terra-validator_exporter/function/keyutil"
+	t "terra-validator_exporter/types"
 
+	"encoding/json"
 	"fmt"
-        "os/exec"
-        "encoding/json"
+	"os/exec"
 	"strconv"
 )
 
-
-var (
-)
+var ()
 
 func BlockStatus() t.BlockStatus {
 
 	var blockStatus t.BlockStatus
 
-	cmd := "curl -s " +t.RpcServer +"/block"
-        out, _ := exec.Command("/bin/bash", "-c", cmd).Output()
-        json.Unmarshal(out, &blockStatus)
-
+	cmd := "curl -s " + t.RpcServer + "/block"
+	out, _ := exec.Command("/bin/bash", "-c", cmd).Output()
+	json.Unmarshal(out, &blockStatus)
 
 	currentBlockHeight, _ := strconv.Atoi(blockStatus.Result.Block.Header.Height)
 
 	// 현재 precommit 정보와 현재 blockHeight를 맞추기 위해 이전 블록 정보로 표시
-	blockStatus = previousBlockStatus(currentBlockHeight-1)
-
+	blockStatus = previousBlockStatus(currentBlockHeight - 1)
 
 	return blockStatus
 
@@ -37,11 +33,11 @@ func previousBlockStatus(blockHeight int) t.BlockStatus {
 
 	var blockStatus t.BlockStatus
 
-        cmd := "curl -s " +t.RpcServer +"/block?height=" +fmt.Sprint(blockHeight)
-        out, _ := exec.Command("/bin/bash", "-c", cmd).Output()
-        json.Unmarshal(out, &blockStatus)
+	cmd := "curl -s " + t.RpcServer + "/block?height=" + fmt.Sprint(blockHeight)
+	out, _ := exec.Command("/bin/bash", "-c", cmd).Output()
+	json.Unmarshal(out, &blockStatus)
 
-        return blockStatus
+	return blockStatus
 
 }
 
@@ -50,7 +46,7 @@ func CalcBlockTime(currentBlockStatus t.BlockStatus) float64 {
 	var blockTime float64
 
 	currentBlockHeight, _ := strconv.Atoi(currentBlockStatus.Result.Block.Header.Height)
-        previousBlockHeight := currentBlockHeight-1
+	previousBlockHeight := currentBlockHeight - 1
 
 	currentBlockTime := currentBlockStatus.Result.Block.Header.Time
 	previousBlockTime := previousBlockStatus(previousBlockHeight).Result.Block.Header.Time
@@ -58,7 +54,7 @@ func CalcBlockTime(currentBlockStatus t.BlockStatus) float64 {
 	if previousBlockTime.IsZero() {
 		blockTime = 0.0
 	} else {
-		blockTime = float64(currentBlockTime.Sub(previousBlockTime))/1000000000
+		blockTime = float64(currentBlockTime.Sub(previousBlockTime)) / 1000000000
 		blockTime, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", blockTime), 64)
 	}
 
@@ -72,13 +68,12 @@ func ProposerMoniker(propserAddress string, validatorsetsStatus map[string][]str
 
 	for validator_pubKey := range validatorsetsStatus {
 
-                //  validatorsStatus[validator_pubKey][4], validatorsetsStatus[validator_pubKey][0]: cons_address(tendermint show-address)
-                //  validatorsStatus[validator_pubKey][0]: Moniker
-		if keys[4] ==  validatorsetsStatus[validator_pubKey][0] {
+		//  validatorsStatus[validator_pubKey][4], validatorsetsStatus[validator_pubKey][0]: cons_address(tendermint show-address)
+		//  validatorsStatus[validator_pubKey][0]: Moniker
+		if keys[4] == validatorsetsStatus[validator_pubKey][0] {
 			proposerMoniker = validatorsStatus[validator_pubKey][0]
 		}
-        }
-
+	}
 
 	return proposerMoniker
 

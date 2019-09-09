@@ -1,21 +1,20 @@
 package consensus
 
 import (
-        t "github.com/node-a-team/terra-validator_exporter/types"
+	t "terra-validator_exporter/types"
 
-        "os/exec"
-        "encoding/json"
+	"encoding/json"
+	"os/exec"
 )
-
 
 var (
 	consensusStatus t.ConsensusStatus
 )
 
 func ConsensusStatus() t.ConsensusStatus {
-        cmd := "curl -s -XGET " +t.RpcServer +"/consensus_state"  +" -H \"accept:application/json\""
-        out, _ := exec.Command("/bin/bash", "-c", cmd).Output()
-        json.Unmarshal(out, &consensusStatus)
+	cmd := "curl -s -XGET " + t.RpcServer + "/consensus_state" + " -H \"accept:application/json\""
+	out, _ := exec.Command("/bin/bash", "-c", cmd).Output()
+	json.Unmarshal(out, &consensusStatus)
 
 	return consensusStatus
 }

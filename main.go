@@ -4,29 +4,24 @@ import (
 	"log"
 	"net/http"
 
-        setting "github.com/node-a-team/terra-validator_exporter/function/setting"
-        exporter "github.com/node-a-team/terra-validator_exporter/function/exporter"
+	config "terra-validator_exporter/function/config"
+	exporter "terra-validator_exporter/function/exporter"
 
-        "github.com/prometheus/client_golang/prometheus/promhttp"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
-var (
-
-
-)
-
-
+var ()
 
 func main() {
 
-        var port string
-        port = "8888"
+	var port string
+	port = "8888"
 
-        http.Handle("/metrics", promhttp.Handler())
+	http.Handle("/metrics", promhttp.Handler())
 
-	setting.Init()
+	config.Init()
 
 	go exporter.Exporter()
 
-	 log.Fatal(http.ListenAndServe(":"+port, nil))
- }
+	log.Fatal(http.ListenAndServe(":"+port, nil))
+}
