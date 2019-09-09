@@ -1,12 +1,10 @@
 package account
 
 import (
-	t "terra-validator_exporter/types"
-	//      "time"
-	//      "fmt"
+	t "github.com/node-a-team/terra-validator_exporter/types"
+
 	"encoding/json"
 	"os/exec"
-	//        "sync"
 	"strconv"
 )
 

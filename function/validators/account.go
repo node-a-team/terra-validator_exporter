@@ -1,10 +1,10 @@
 package validators
 
 import (
-	t "terra-validator_exporter/types"
+	t "github.com/node-a-team/terra-validator_exporter/types"
 
-	keyutil "terra-validator_exporter/function/keyutil"
-	utils "terra-validator_exporter/function/utils"
+	keyutil "github.com/node-a-team/terra-validator_exporter/function/keyutil"
+	utils "github.com/node-a-team/terra-validator_exporter/function/utils"
 
 	"fmt"
 	"log"

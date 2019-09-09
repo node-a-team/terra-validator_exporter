@@ -1,8 +1,8 @@
 package block
 
 import (
-	keyutil "terra-validator_exporter/function/keyutil"
-	t "terra-validator_exporter/types"
+	keyutil "github.com/node-a-team/terra-validator_exporter/function/keyutil"
+	t "github.com/node-a-team/terra-validator_exporter/types"
 
 	"encoding/json"
 	"fmt"

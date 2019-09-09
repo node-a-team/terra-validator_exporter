@@ -4,8 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	config "terra-validator_exporter/function/config"
-	exporter "terra-validator_exporter/function/exporter"
+	config "github.com/node-a-team/terra-validator_exporter/function/config"
+	exporter "github.com/node-a-team/terra-validator_exporter/function/exporter"
 
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )

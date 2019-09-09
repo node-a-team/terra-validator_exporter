@@ -7,15 +7,15 @@ import (
 	"strconv"
 	"time"
 
-	t "terra-validator_exporter/types"
+	t "github.com/node-a-team/terra-validator_exporter/types"
 
-	block "terra-validator_exporter/function/block"
-	commit "terra-validator_exporter/function/commit"
-	consensus "terra-validator_exporter/function/consensus"
-	keyutil "terra-validator_exporter/function/keyutil"
-	staking "terra-validator_exporter/function/staking"
-	utils "terra-validator_exporter/function/utils"
-	validators "terra-validator_exporter/function/validators"
+	block "github.com/node-a-team/terra-validator_exporter/function/block"
+	commit "github.com/node-a-team/terra-validator_exporter/function/commit"
+	consensus "github.com/node-a-team/terra-validator_exporter/function/consensus"
+	keyutil "github.com/node-a-team/terra-validator_exporter/function/keyutil"
+	staking "github.com/node-a-team/terra-validator_exporter/function/staking"
+	utils "github.com/node-a-team/terra-validator_exporter/function/utils"
+	validators "github.com/node-a-team/terra-validator_exporter/function/validators"
 
 	"github.com/prometheus/client_golang/prometheus"
 )

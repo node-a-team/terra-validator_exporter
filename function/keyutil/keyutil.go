@@ -4,8 +4,8 @@ import (
 	"encoding/hex"
 	"fmt"
 
+	t "github.com/node-a-team/terra-validator_exporter/types"
 	"github.com/tendermint/tendermint/libs/bech32"
-	t "terra-validator_exporter/types"
 )
 
 // Print info from HEX

@@ -1,10 +1,11 @@
 package validators
 
 import (
+	utils "github.com/node-a-team/terra-validator_exporter/function/utils"
+	t "github.com/node-a-team/terra-validator_exporter/types"
+
 	"encoding/json"
-	"os/exec"
-	utils "terra-validator_exporter/function/utils"
-	t "terra-validator_exporter/types"
+        "os/exec"
 )
 
 var ()

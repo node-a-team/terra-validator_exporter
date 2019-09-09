@@ -1,8 +1,9 @@
 package utils
 
 import (
+	t "github.com/node-a-team/terra-validator_exporter/types"
+
 	"math"
-	t "terra-validator_exporter/types"
 )
 
 func GetAmount(rewards []t.Coin, denom string) float64 {
