@@ -5,8 +5,10 @@
 
 Terra 검증인을 위한 Prometheus exporter
 
+
 ## Introduction
 Tendermint의 기본 Prometheus exporter(localhost:26657)에서 제공되지 않는 부분, 특별히 검증인의 정보를 모니터링하기 위한 exporter
+
 
 ## Collecting information list
 > **Network**
@@ -47,6 +49,7 @@ Tendermint의 기본 Prometheus exporter(localhost:26657)에서 제공되지 않
 
 ![CreatePlan](./example/monitoring_example(prometheus).png)
 
+
 ## Quick Start
 - 다운로드
 ```
@@ -83,13 +86,16 @@ exporterListenPort = "26661"
 outputPrint = true
 ```
 
+![CreatePlan](./example/config.png)
+
  - 실행
 ```
 ./terra-validator_exporter
 ```
 
+![CreatePlan](./example/config_outputPrint(true).png)
 
 
-
+## Grafana 예시
 ![CreatePlan](./example/monitoring_example(grafana).png)
 
