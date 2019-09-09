@@ -10,42 +10,42 @@ Tendermint의 기본 Prometheus exporter(localhost:26657)에서 제공되지 않
 
 ## Collecting information list
 > **Network**
-> - chainId
-> - blockHeight
-> - currentBlockTime
-> - bondedTokens
-> - notBondedTokens
-> - totalBondedTokens
-> - bondingRate
-> - validatorCount
-> - precommitRate
-> - proposerWalletAccountNumber
-> 
+- chainId
+- blockHeight
+- currentBlockTime
+- bondedTokens
+- notBondedTokens
+- totalBondedTokens
+- bondingRate
+- validatorCount
+- precommitRate
+- proposerWalletAccountNumber
+
 > **Validator Info**
-> - moniker
-> - accountAddress
-> - consHexAddress
-> - operatorAddress
-> - validatorPubKey
-> - votingPower
-> - delegatorShares
-> - delegatorCount
-> - delegationRatio
-> - selfDelegationAmount
-> - proposerPriorityValue
-> - proposerPriority
-> - proposingStatus
-> - validatorCommitStatus
-> - commissionMaxChangeRate
-> - commissionMaxRate
-> - commissionRate
-> - balances(uluna, ukrw, usdr, uusd)
-> - commission(uluna, ukrw, usdr, uusd)
-> - rewards(uluna, ukrw, usdr, uusd)
-> - minSelfDelegation
-> - jailed
->
-> ![CreatePlan](./example/monitoring_example(prometheus).png)
+- moniker
+- accountAddress
+- consHexAddress
+- operatorAddress
+- validatorPubKey
+- votingPower
+- delegatorShares
+- delegatorCount
+- delegationRatio
+- selfDelegationAmount
+- proposerPriorityValue
+- proposerPriority
+- proposingStatus
+- validatorCommitStatus
+- commissionMaxChangeRate
+- commissionMaxRate
+- commissionRate
+- balances(uluna, ukrw, usdr, uusd)
+- commission(uluna, ukrw, usdr, uusd)
+- rewards(uluna, ukrw, usdr, uusd)
+- minSelfDelegation
+- jailed
+
+![CreatePlan](./example/monitoring_example(prometheus).png)
 
 ## Quick Start
 - 다운로드
