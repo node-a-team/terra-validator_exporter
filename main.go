@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 
+	t "github.com/node-a-team/terra-validator_exporter/types"
 	config "github.com/node-a-team/terra-validator_exporter/function/config"
 	exporter "github.com/node-a-team/terra-validator_exporter/function/exporter"
 
@@ -14,14 +15,11 @@ var ()
 
 func main() {
 
-	var port string
-	port = "8888"
-
 	http.Handle("/metrics", promhttp.Handler())
 
 	config.Init()
 
 	go exporter.Exporter()
 
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	log.Fatal(http.ListenAndServe(":"+t.ExporterListenPort, nil))
 }
