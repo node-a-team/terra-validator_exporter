@@ -98,5 +98,6 @@ outputPrint = true
 
 
 ## Grafana 예시
+Grafana의 알람 기능을 활용하면 각 지표에 대한 알람 설정도 가능(예를 들면 검증인이 Precommit에 참여하지 못했을 때, 혹은 Jail 당했을 때 등)
 ![CreatePlan](./example/monitoring_example(grafana).png)
 
