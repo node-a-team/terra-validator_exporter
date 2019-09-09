@@ -15,4 +15,4 @@ operatorAddress = ""
 
 [option]
 exporterListenPort = "26661"
-outputPrint = false
+outputPrint = true

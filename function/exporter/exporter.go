@@ -193,7 +193,7 @@ func Exporter() {
 
 				// print
 				if t.OutputPrint {
-					fmt.Printf("\033[1m\033[7m\033[32m[ ############ Chain_id: %s ############ ]\n\n"+contentsColorInit, chainId)
+					fmt.Printf("\n\n\033[1m\033[7m\033[32m[ ############ Chain_id: %s ############ ]\n\n"+contentsColorInit, chainId)
 					fmt.Printf("\033[1m> Height: \033[32m%0.0f\n"+contentsColorInit, blockHeight)
 
 					fmt.Printf("  - Time: %s UTC\n", blockTime)
