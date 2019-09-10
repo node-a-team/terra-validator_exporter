@@ -18,7 +18,7 @@ Tendermint의 기본 Prometheus exporter(localhost:26657)에서 제공되지 않
 - bondedTokens: 본딩된 토큰 현황(Luna) 
 - notBondedTokens: 본딩되지 않은 토큰 현황(Luna)
 - totalBondedTokens: 본딩된 토큰+본딩되지 않은 토큰(Luna)
-- bondingRate: 본딩률
+- bondedRate: 본딩률
 - validatorCount: 검증인 수
 - precommitRate: Precommit 참여율
 - proposerWalletAccountNumber: 검증인의 지갑에 대한 Account number(Grafana에서 Proposer 표현 시 활용되며 정리된 파일이 $HOME 디렉토리에 "validatorsWalletAccounNumber.csv"로 저장됨)
@@ -29,7 +29,7 @@ Tendermint의 기본 Prometheus exporter(localhost:26657)에서 제공되지 않
 - consHexAddress: 검증인의 Consensus Hex address
 - operatorAddress: 검증인의 Operator address
 - validatorPubKey: 검증인의 Validator pubkey(```terrad tendermint show-validator```)
-- votingPower: 검증인의 보팅 파워
+- votingPower: 검증인의 보팅 파워 (소수점 생략)
 - delegatorShares: 검증인의 위임량
 - delegatorCount: 검증인의 위임자 수
 - delegationRatio: Network 본딩에 대한 검증인의 위임량 비율
