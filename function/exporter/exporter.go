@@ -22,7 +22,7 @@ import (
 
 var (
 	denomList           = []string{"uluna", "ukrw", "usdr", "uusd"}
-	gaugesNamespaceList = [...]string{"blockHeight", "currentBlockTime", "precommitRate", "proposerWalletAccountNumber", "validatorCount", "notBondedTokens", "bondedTokens", "totalBondedTokens", "bondingRate", "validatorCommitStatus", "proposerPriorityValue", "proposerPriority", "proposingStatus", "votingPower", "delegatorShares", "delegationRatio", "delegatorCount", "selfDelegationAmount", "commissionRate", "commissionMaxRate", "commissionMaxChangeRate", "minSelfDelegation", "jailed"}
+	gaugesNamespaceList = [...]string{"blockHeight", "currentBlockTime", "precommitRate", "proposerWalletAccountNumber", "validatorCount", "notBondedTokens", "bondedTokens", "totalBondedTokens", "bondedRate", "validatorCommitStatus", "proposerPriorityValue", "proposerPriority", "proposingStatus", "votingPower", "delegatorShares", "delegationRatio", "delegatorCount", "selfDelegationAmount", "commissionRate", "commissionMaxRate", "commissionMaxChangeRate", "minSelfDelegation", "jailed"}
 
 	contentsColorInit string = "\033[0m"
 )
@@ -106,7 +106,7 @@ func Exporter() {
 		notBondedTokens := notBondedTokensOrigin / math.Pow10(6)
 		bondedTokens := bondedTokensOrigin / math.Pow10(6)
 		totalBondedTokens := totalBondedTokensOrigin / math.Pow10(6)
-		bondingRate := bondedTokensOrigin / totalBondedTokensOrigin
+		bondedRate := bondedTokensOrigin / totalBondedTokensOrigin
 
 		// consensus
 		latestRound := len(consensusStatus.Result.Round_state.Height_vote_set) - 1
@@ -197,10 +197,10 @@ func Exporter() {
 					fmt.Printf("\033[1m> Height: \033[32m%0.0f\n"+contentsColorInit, blockHeight)
 
 					fmt.Printf("  - Time: %s UTC\n", blockTime)
-					fmt.Printf("  - Block_time: %0.2fs\n", currentBlockTime)
+					fmt.Printf("  - BlockTime: %0.2fs\n", currentBlockTime)
 
 					fmt.Printf("  - Proposer: %s(%s)\n", proposerMoniker, proposerConsHexAddress)
-					fmt.Printf("  - Precommit_rate: %f\n", precommitRate)
+					fmt.Printf("  - PrecommitRate: %f\n", precommitRate)
 
 					fmt.Println("  - height/round/step:", heightRoundStep)
 					fmt.Println("  - prevotes:", prevotes)
@@ -209,30 +209,30 @@ func Exporter() {
 					fmt.Println("\n  - notBondedTokens: ", notBondedTokens)
 					fmt.Println("  - bondedTokens: ", bondedTokens)
 					fmt.Println("  - totalTokens: ", totalBondedTokens)
-					fmt.Println("  - bonding Rate: ", bondedTokens/totalBondedTokens)
+					fmt.Println("  - bondedRate: ", bondedTokens/totalBondedTokens)
 
 					fmt.Printf("\n\n\033[1m> Moniker: \033[33m%s\n"+contentsColorInit, moniker)
 					fmt.Println("  - validatorCount: ", validatorCount)
-					fmt.Println("  - validator_pubKey: ", validatorPubKey)
-					fmt.Println("  - operator_address: ", operatorAddress)
-					fmt.Println("  - account_address: ", accountAddress)
-					fmt.Println("  - cons_Bech32Address: ", consBech32Address)
-					fmt.Println("  - cons_HexAddress: ", consHexAddress)
+					fmt.Println("  - validatorPubKey: ", validatorPubKey)
+					fmt.Println("  - operatorAddress: ", operatorAddress)
+					fmt.Println("  - accountAddress: ", accountAddress)
+					fmt.Println("  - consBech32Address: ", consBech32Address)
+					fmt.Println("  - consHexAddress: ", consHexAddress)
 
 					fmt.Println("\n  - validatorCommitStatus: ", validatorCommitStatus)
-					fmt.Println("  - proposer_priorityValue: ", proposerPriorityValue)
-					fmt.Println("  - proposer_priority: ", proposerPriority)
+					fmt.Println("  - proposerpriorityValue: ", proposerPriorityValue)
+					fmt.Println("  - proposerpriority: ", proposerPriority)
 					fmt.Println("  - proposingStatus: ", proposingStatus)
-					fmt.Printf("  - voting_power: %f\n", votingPower)
+					fmt.Printf("  - votingPower: %f\n", votingPower)
 					fmt.Println("  - jailed: ", jailed)
 					//				fmt.Println("  - tokens: ", tokens)
 					fmt.Println("  - delegatorShares: ", delegatorShares)
 					fmt.Printf("  - delegationRatio: %0.4f\n", delegationRatio)
 					fmt.Println("  - delegatorCount: ", delegatorCount)
 					fmt.Println("  - selfDelegationAmount: ", selfDelegationAmount)
-					fmt.Printf("  - commission_rate: %0.4f\n", commissionRate)
-					fmt.Printf("  - commission_maxRate: %0.4f\n", commissionMaxRate)
-					fmt.Printf("  - commission_maxChangeRate: %0.4f\n", commissionMaxChangeRate)
+					fmt.Printf("  - commissionRate: %0.4f\n", commissionRate)
+					fmt.Printf("  - commissionMaxRate: %0.4f\n", commissionMaxRate)
+					fmt.Printf("  - commissionMaxChangeRate: %0.4f\n", commissionMaxChangeRate)
 					fmt.Println("  - minSelfDelegation: ", minSelfDelegation)
 					fmt.Println("  - walletAccountNumber: ", walletAccountNumber)
 				}
@@ -252,7 +252,7 @@ func Exporter() {
 				}
 
 				// prometheus giages value
-				gaugesValue := [...]float64{blockHeight, currentBlockTime, precommitRate, proposerWalletAccountNumber, validatorCount, notBondedTokens, bondedTokens, totalBondedTokens, bondingRate, validatorCommitStatus, proposerPriorityValue, proposerPriority, proposingStatus, votingPower, delegatorShares, delegationRatio, delegatorCount, selfDelegationAmount, commissionRate, commissionMaxRate, commissionMaxChangeRate, minSelfDelegation, jailed}
+				gaugesValue := [...]float64{blockHeight, currentBlockTime, precommitRate, proposerWalletAccountNumber, validatorCount, notBondedTokens, bondedTokens, totalBondedTokens, bondedRate, validatorCommitStatus, proposerPriorityValue, proposerPriority, proposingStatus, votingPower, delegatorShares, delegationRatio, delegatorCount, selfDelegationAmount, commissionRate, commissionMaxRate, commissionMaxChangeRate, minSelfDelegation, jailed}
 
 				for i := 0; i < len(gaugesNamespaceList); i++ {
 					gauges[i].Set(gaugesValue[i])

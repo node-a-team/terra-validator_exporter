@@ -5,7 +5,7 @@ import (
 
 	"fmt"
 	"log"
-	"os"
+//	"os"
 	"time"
 
 	"github.com/BurntSushi/toml"
@@ -43,7 +43,7 @@ func Init() {
 }
 
 func readConfig() t.Config {
-
+/*
 	var configfile string = "config.toml"
 	var config t.Config
 
@@ -56,6 +56,15 @@ func readConfig() t.Config {
 	if _, err := toml.DecodeFile(configfile, &config); err != nil {
 		log.Fatal(err)
 	}
+*/
+
+        var config t.Config
+
+        if _, err := toml.DecodeFile("./config.toml", &config); err != nil{
+
+                log.Fatal("Config file is missing: ", config)
+        }
+
 
 	return config
 
