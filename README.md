@@ -3,66 +3,66 @@
 ![CreatePlan](https://img.shields.io/badge/go-1.12.4%2B-blue)
 ![CreatePlan](https://img.shields.io/badge/license-Apache--2.0-green)
 
-Terra 검증인을 위한 Prometheus exporter
+Prometheus exporter for Terra Validators
 
 
 ## Introduction
-Tendermint의 기본 Prometheus exporter(localhost:26657)에서 제공되지 않는 부분, 특별히 검증인의 정보를 모니터링하기 위한 exporter
+This exporter is for monitoring information which is not provided from Tendermint’s basic Prometheus exporter (localhost:26657), and other specific information monitoring purposes
 
 
 ## Collecting information list
 > **Network**
-- chainId: Chain 이름
-- blockHeight: 블록 높이
-- currentBlockTime: 블록 타임(현재 블록생성 시간-이전 블록생성 시간)
-- bondedTokens: 본딩된 토큰 현황(Luna) 
-- notBondedTokens: 본딩되지 않은 토큰 현황(Luna)
-- totalBondedTokens: 본딩된 토큰+본딩되지 않은 토큰(Luna)
-- bondingRate: 본딩률
-- validatorCount: 검증인 수
-- precommitRate: Precommit 참여율
-- proposerWalletAccountNumber: 검증인의 지갑에 대한 Account number(Grafana에서 Proposer 표현 시 활용되며 정리된 파일이 $HOME 디렉토리에 "validatorsWalletAccounNumber.csv"로 저장됨)
+- chainId: Name of the chain
+- blockHeight: Height of the current block
+- currentBlockTime: Time it takes to create & confirm block (current block time - previous block time)
+- bondedTokens: Number of currently bonded Luna
+- notBondedTokens: Number of unbonded Luna
+- totalBondedTokens: Number of currently bonded & unbonded Luna
+- bondedRate: Ratio of bonded tokens within the network
+- validatorCount: Number of validators within the network
+- precommitRate: Precommit Ratio of precommits collected in a round
+- proposerWalletAccountNumber: Account number given on each validator’s wallet (Required to show Proposer in Grafana) 
 
 > **Validator Info**
-- moniker: 검증인의 moniker
-- accountAddress: 검증인의 Account address
-- consHexAddress: 검증인의 Consensus Hex address
-- operatorAddress: 검증인의 Operator address
-- validatorPubKey: 검증인의 Validator pubkey(```terrad tendermint show-validator```)
-- votingPower: 검증인의 보팅 파워
-- delegatorShares: 검증인의 위임량
-- delegatorCount: 검증인의 위임자 수
-- delegationRatio: Network 본딩에 대한 검증인의 위임량 비율
-- selfDelegationAmount: 검증인의 자체 위임량
-- proposerPriorityValue: 검증인의 Proposer 우선순위 값
-- proposerPriority: 검증인의 Proposer 우선순위
-- proposingStatus: 검증인의 Proposer 여부(true: 1, false: 0)
-- validatorCommitStatus: 검증인의 Commit 여부(true: 1, false: 0)
-- commissionMaxChangeRate: 검증인의 수수료 최대 변경률
-- commissionMaxRate: 검증인의 최대 수수료율
-- commissionRate: 검증인의 현재 수수료율
-- balances(luna, krw, sdr, usd): 검증인의 지갑 정보
-- commission(luna, krw, sdr, usd): 검증인의 누적된 수수료 정보
-- rewards(luna, krw, sdr, usd): 검증인의 누적된 리워드 정보
-- minSelfDelegation: 검증인의 최소 위임량 기준(Luna)
-- jailed: 검증인의 감옥 상태(true: 1, false: 0)
+- moniker: Name of the validator
+- accountAddress: Validator's Account address
+- consHexAddress: Validator's Consensus Hex address
+- operatorAddress: Validator's Operator address
+- validatorPubKey: Validator's Validator pubkey(```terrad tendermint show-validator```)
+- votingPower: Decimal truncated Total voting power of the validator
+- delegatorShares: Validator's total delegated tokens
+- delegatorCount: Number of each unique delegators for a validator
+- delegationRatio: Ratio of validator's bonded tokens to the network's total bonded tokens
+- selfDelegationAmount: Self-bonded amount of the validator
+- proposerPriorityValue: Number which represents the priority of the validator proposing in the next round
+- proposerPriority: Rank of the proposerPriorityValue
+- proposingStatus: Shows if the validator is the proposer or not in the current round(true: 1, false: 0)
+- validatorCommitStatus: Confirms if the validator has committed in this round(true: 1, false: 0)
+- commissionMaxChangeRate: Max range of commission rate whic hthe validator can change
+- commissionMaxRate: The highest commission rate which the validator can charge
+- commissionRate: Commission rate of the validator charged on delegators' rewards
+- balances(luna, krw, sdr, usd): Wallet information of the validator which shows the balance
+- commission(luna, krw, sdr, usd): Accumulated commission fee of the validator
+- rewards(luna, krw, sdr, usd): Accumulated rewards of the validator
+- minSelfDelegation: The required minimum number of tokens whic hthe validator must self-delegate
+- jailed: Confirms if the validator is jailed or not(true: 1, false: 0)
 
 ![CreatePlan](./example/monitoring_example(prometheus).png)
 
 
 ## Quick Start
-프로그램 실행을 위해서는 RPC 및 REST 서버의 정보가 필요
-- 다운로드
+RPC and REST server information is required to run the program
+- Download
 ```
 wget https://github.com/node-a-team/terra-validator_exporter/releases/download/v0.1.0/terra-validator_exporter_v0.1.0.tar.gz
 tar -xzvf terra-validator_exporter_v0.1.0.tar.gz &&  cd terra-validator_exporter
 ```
 
- - Config 설정
- 1) RPC 및 Rest 서버 정보 입력
- 2) 검증인 Operator Address 입력(```terracli keys show [Key Name] --bech=val --address```)
- 3) exporter 포트 설정
- 4) outPrint 설정(true로 설정할 경우 exporter에서 수집되는 정보 출력)
+ - Config Setup
+ 1) Input RPC and Rest server information
+ 2) Input validator operator address(```terracli keys show [Key Name] --bech=val --address```)
+ 3) Set exporter port
+ 4) Set outPrint (if true: prints collected information from the exporter)
 ```
 vi config.toml
 ```
@@ -89,7 +89,7 @@ outputPrint = true
 
 ![CreatePlan](./example/config.png)
 
- - 실행
+ - Run
 ```
 ./terra-validator_exporter
 ```
@@ -97,6 +97,7 @@ outputPrint = true
 ![CreatePlan](./example/config_outputPrint(true).png)
 
 
-## Grafana 예시
+## Grafana Example
+Can set alarms using the functions on Grafana (ex. Alarms if the validator fails to precommit or gets jailed)
 ![CreatePlan](./example/monitoring_example(grafana).png)
 
