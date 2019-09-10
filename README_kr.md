@@ -21,7 +21,7 @@ Tendermint의 기본 Prometheus exporter(localhost:26657)에서 제공되지 않
 - bondingRate: 본딩률
 - validatorCount: 검증인 수
 - precommitRate: Precommit 참여율
-- proposerWalletAccountNumber: 검증인의 지갑에 대한 Account number(Grafana에서 Proposer 표현 시 활요)
+- proposerWalletAccountNumber: 검증인의 지갑에 대한 Account number(Grafana에서 Proposer 표현 시 활용되며 정리된 파일이 %HOME 디렉토리에 "validatorsWalletAccounNumber.csv"로 저장됨)
 
 > **Validator Info**
 - moniker: 검증인의 moniker
