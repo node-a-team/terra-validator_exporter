@@ -44,7 +44,7 @@ This exporter is for monitoring information which is not provided from Tendermin
 - balances(luna, krw, sdr, usd): Wallet information of the validator which shows the balance
 - commission(luna, krw, sdr, usd): Accumulated commission fee of the validator
 - rewards(luna, krw, sdr, usd): Accumulated rewards of the validator
-- minSelfDelegation: The required minimum number of tokens whic hthe validator must self-delegate
+- minSelfDelegation: The required minimum number of tokens which the validator must self-delegate
 - jailed: Confirms if the validator is jailed or not(true: 1, false: 0)
 
 ![CreatePlan](./example/monitoring_example(prometheus).png)
