@@ -1,18 +1,14 @@
 # TOML Document for Terra-Validator Exporter(Pometheus & Grafana)
 
-title = "Terra-Validator Exporter TOML"
-network = "terra"
+title = "TOML Document"
 
-# RPC-Server
-[rpc]
-address = "localhost:26657"
+[Servers]
+	[Servers.addr]
+	rpc = "15.164.30.221:26657"
+	rest = "15.164.30.221:1317"
 
-[rest_server]
-address = "localhost:1317"
+[Validator]
+operatorAddr = "terravaloper1tusfpgvjrplqg2fm7wacy4slzjmnzswcfufuvp"
 
-[validator_info]
-operatorAddress = ""
-
-[option]
-exporterListenPort = "26661"
-outputPrint = true
+[Options]
+listenPort = "26661"
