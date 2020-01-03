@@ -17,7 +17,7 @@ import (
 var (
 	metricData metric
 
-	DenomList = []string{"uluna", "ukrw", "usdr", "uusd"}
+	DenomList = []string{"uluna", "ukrw", "usdr", "uusd", "umnt"}
 	GaugesNamespaceList = [...]string{"blockHeight",
 				"notBondedTokens",
 				"bondedTokens",
