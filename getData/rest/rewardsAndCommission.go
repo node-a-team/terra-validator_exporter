@@ -1,7 +1,9 @@
 package rest
 
 import (
-      "encoding/json"
+	"strings"
+	"go.uber.org/zap"
+	"encoding/json"
 )
 
 type rewardsAndCommisson struct {
@@ -15,12 +17,19 @@ type rewardsAndCommisson struct {
 
 }
 
-func getRewardsAndCommisson() ([]Coin, []Coin) {
+func getRewardsAndCommisson(log *zap.Logger) ([]Coin, []Coin) {
 
 	var rc rewardsAndCommisson
 
-	res := runRESTCommand("/distribution/validators/" +OperAddr)
+	res, _ := runRESTCommand("/distribution/validators/" +OperAddr)
 	json.Unmarshal(res, &rc)
+	// log
+        if strings.Contains(string(res), "not found") {
+                // handle error
+                log.Fatal("REST-Server", zap.Bool("Success", false), zap.String("err", string(res),))
+        } else {
+                log.Info("REST-Server", zap.Bool("Success", true), zap.String("err", "nil"), zap.String("Get Data", "Rewards&Commission"),)
+        }
 
 	return rc.Result.Self_bond_rewards, rc.Result.Val_commission
 }

@@ -1,6 +1,8 @@
 package rest
 
 import (
+	"strings"
+	"go.uber.org/zap"
 	"encoding/json"
 	utils "github.com/node-a-team/terra-validator_exporter/utils"
 )
@@ -14,13 +16,20 @@ type oracleMiss struct {
 	Result string	`json:"result"`
 }
 
-func getOracleMiss() oracle {
+func getOracleMiss(log *zap.Logger) oracle {
 
 	var o oracle
         var om oracleMiss
 
-        res := runRESTCommand("/oracle/voters/" +OperAddr +"/miss")
+        res, _ := runRESTCommand("/oracle/voters/" +OperAddr +"/miss")
         json.Unmarshal(res, &om)
+	// log
+        if strings.Contains(string(res), "not found") {
+                // handle error
+                log.Fatal("REST-Server", zap.Bool("Success", false), zap.String("err", string(res),))
+        } else {
+                log.Info("REST-Server", zap.Bool("Success", true), zap.String("err", "nil"), zap.String("Get Data", "Oracle Miss"),)
+        }
 
 	o.Miss = utils.StringToFloat64(om.Result)
 

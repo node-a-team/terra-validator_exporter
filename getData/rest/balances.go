@@ -2,7 +2,9 @@ package rest
 
 import (
 //        "fmt"
-      "encoding/json"
+	"strings"
+	"go.uber.org/zap"
+	"encoding/json"
 )
 
 type balances struct {
@@ -15,12 +17,19 @@ type Coin struct {
         Amount  string
 }
 
-func getBalances(accAddr string) []Coin {
+func getBalances(accAddr string, log *zap.Logger) []Coin {
 
 	var b balances
 
-	res := runRESTCommand("/bank/balances/" +accAddr)
+	res, _ := runRESTCommand("/bank/balances/" +accAddr)
 	json.Unmarshal(res, &b)
+	// log
+        if strings.Contains(string(res), "not found") {
+                // handle error
+                log.Fatal("REST-Server", zap.Bool("Success", false), zap.String("err", string(res),))
+        } else {
+                log.Info("REST-Server", zap.Bool("Success", true), zap.String("err", "nil"), zap.String("Get Data", "Staking Pool"),)
+        }
 
 	return b.Result
 }

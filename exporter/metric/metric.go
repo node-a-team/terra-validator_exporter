@@ -5,6 +5,7 @@ import (
 //	"fmt"
 //	"encoding/hex"
 //	sdk "github.com/cosmos/cosmos-sdk/types"
+	"go.uber.org/zap"
 
 //	"github.com/node-a-team/terra-validator_exporter/getData"
 	rest "github.com/node-a-team/terra-validator_exporter/getData/rest"
@@ -113,7 +114,7 @@ type metric struct {
 
 
 
-func SetMetric(currentBlock int64, restData *rest.RESTData, rpcData *rpc.RPCData) {
+func SetMetric(currentBlock int64, restData *rest.RESTData, rpcData *rpc.RPCData, log *zap.Logger) {
 
 	operAddr := cfg.Config.Validator.OperatorAddr
 	consPubKey := restData.Validators.ConsPubKey
@@ -142,8 +143,8 @@ func SetMetric(currentBlock int64, restData *rest.RESTData, rpcData *rpc.RPCData
 
 	// address
 	metricData.Validator.Address.Operator = operAddr
-	metricData.Validator.Address.Account = utils.GetAccAddrFromOperAddr(operAddr)
-	metricData.Validator.Address.ConsensusHex = utils.Bech32AddrToHexAddr(consAddr)
+	metricData.Validator.Address.Account = utils.GetAccAddrFromOperAddr(operAddr, log)
+	metricData.Validator.Address.ConsensusHex = utils.Bech32AddrToHexAddr(consAddr, log)
 
 	// proposer
 	metricData.Validator.Proposer.Ranking = utils.StringToFloat64(restData.Validatorsets[consPubKey][3])

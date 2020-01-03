@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"sort"
 	"strconv"
+	"go.uber.org/zap"
+	"strings"
 )
 
 type validatorsets struct {
@@ -23,13 +25,22 @@ type validatorsets struct {
 	}
 }
 
-func getValidatorsets(currentBlockHeight int64) map[string][]string {
+func getValidatorsets(currentBlockHeight int64, log *zap.Logger) map[string][]string {
 
 	var vSets validatorsets
 	var vSetsResult map[string][]string = make(map[string][]string)
 
-	res := runRESTCommand("/validatorsets/" +fmt.Sprint(currentBlockHeight))
+	res, _ := runRESTCommand("/validatorsets/" +fmt.Sprint(currentBlockHeight))
 	json.Unmarshal(res, &vSets)
+
+	// log
+        if strings.Contains(string(res), "not found") {
+                // handle error
+                log.Fatal("REST-Server", zap.Bool("Success", false), zap.String("err", string(res),))
+        } else {
+                log.Info("REST-Server", zap.Bool("Success", true), zap.String("err", "nil"), zap.String("Get Data", "Validatorsets"),)
+        }
+
 
 
 	for _, value := range vSets.Result.Validators {

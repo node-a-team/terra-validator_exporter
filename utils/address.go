@@ -1,13 +1,14 @@
 package utils
 
 import (
-	"encoding/hex"
 	"fmt"
+	"go.uber.org/zap"
 
 	"github.com/tendermint/tendermint/libs/bech32"
 	"github.com/terra-project/core/types/util"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 )
 
 var (
@@ -27,70 +28,38 @@ var (
         }
 )
 
-// Hex Addr -> Ohter Addr
-func runFromHex(hexaddr string) [6]string {
-
-	// addr[0]: account's address
-	// addr[1]: account's public key
-	// addr[2]: validator's operator address
-	// addr[3]: validator's operator public key
-	// addr[4]: consensus node address
-	// addr[5]: consensus node public key -> No tendermint show-validator
-	var addr [6]string
-
-
-	fmt.Println("Hexxxxxxxxxxxxxxxxxxxxxxxxxx: ", hexaddr)
-
-	bz, _ := hex.DecodeString(hexaddr)
-
-	for i, prefix := range Bech32Prefixes {
-		bech32Addr, err := bech32.ConvertAndEncode(prefix, bz)
-
-		if err != nil {
-			panic(err)
-		}
-
-		addr[i] = bech32Addr
-	}
-
-	return addr
-}
-
 // Bech32 Addr -> Hex Addr
-func Bech32AddrToHexAddr(bech32str string) string {
+func Bech32AddrToHexAddr(bech32str string, log *zap.Logger) string {
 	_, bz, err := bech32.DecodeAndConvert(bech32str)
 	if err != nil {
-		fmt.Println("Not a valid bech32 string")
-		return "function/keyutil) RunFrombech32() Err"
-	}
+                // handle error
+                log.Fatal("Utils-Address", zap.Bool("Success", false), zap.String("err", fmt.Sprint(err),))
+        } else {
+//                log.Info("Utils-Address", zap.Bool("Success", true), zap.String("err", "nil"), zap.String("Change Address", "Bech32Addr To HexAddr"),)
+        }
 
 	return fmt.Sprintf("%X", bz)
 }
 
-
-/*
-// Operator Addr -> Ohter Addre
-func OperAddrToAccAddr(operaddr string) [6]string {
-
-	hexOperaddr := RunFromBech32(operaddr)
-	addr := runFromHex(hexOperaddr)
-
-	return addr
-}
-*/
-
-
-func GetAccAddrFromOperAddr(operAddr string) string {
+func GetAccAddrFromOperAddr(operAddr string, log *zap.Logger) string {
 
         // Get HexAddress
         hexAddr, err := sdk.ValAddressFromBech32(operAddr)
+	// log
         if err != nil {
-                // Error
+                // handle error
+                log.Fatal("Utils-Address", zap.Bool("Success", false), zap.String("err", fmt.Sprint(err),))
+        } else {
+//                log.Info("Utils-Address", zap.Bool("Success", true), zap.String("err", "nil"), zap.String("Change Address", "OperAddr To HexAddr"),)
         }
 
         accAddr, err := sdk.AccAddressFromHex(fmt.Sprint(hexAddr))
+	// log
         if err != nil {
-                // Error
+                // handle error
+                log.Fatal("Utils-Address", zap.Bool("Success", false), zap.String("err", fmt.Sprint(err),))
+        } else {
+//                log.Info("Utils-Address", zap.Bool("Success", true), zap.String("err", "nil"), zap.String("Change Address", "HexAddr To AccAddr"),)
         }
 
         return accAddr.String()

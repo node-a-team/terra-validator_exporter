@@ -1,8 +1,10 @@
 package rest
 
 import (
-      "encoding/json"
-      utils "github.com/node-a-team/terra-validator_exporter/utils"
+	"strings"
+	"go.uber.org/zap"
+	"encoding/json"
+	utils "github.com/node-a-team/terra-validator_exporter/utils"
 )
 
 type delegations struct {
@@ -22,14 +24,20 @@ type delegationInfo struct {
 	SelfDelegation	float64
 }
 
-func getDelegations(accAddr string) delegationInfo {
+func getDelegations(accAddr string, log *zap.Logger) delegationInfo {
 
 	var d delegations
 	var dInfo delegationInfo
 
-	res := runRESTCommand("/staking/validators/" +OperAddr +"/delegations")
+	res, _ := runRESTCommand("/staking/validators/" +OperAddr +"/delegations")
 	json.Unmarshal(res, &d)
-
+	// log
+        if strings.Contains(string(res), "not found") {
+                // handle error
+                log.Fatal("REST-Server", zap.Bool("Success", false), zap.String("err", string(res),))
+        } else {
+                log.Info("REST-Server", zap.Bool("Success", true), zap.String("err", "nil"), zap.String("Get Data", "Delegations"),)
+        }
 
 	dInfo.DelegationCount = float64(len(d.Result))
 

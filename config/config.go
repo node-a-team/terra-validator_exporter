@@ -11,10 +11,10 @@ import (
 )
 
 const (
-	ConfigPath = "config"
 )
 
 var (
+	ConfigPath string
 	Config	configType
 )
 
@@ -58,7 +58,7 @@ func readConfig() configType {
 //	path := viper.GetString(ConfigPath)+"/config.toml"
 
 //        if _, err := toml.DecodeFile(path, &config); err != nil{
-        if _, err := toml.DecodeFile("./config.toml", &config); err != nil{
+        if _, err := toml.DecodeFile(ConfigPath +"/config.toml", &config); err != nil{
 
                 log.Fatal("Config file is missing: ", config)
         }

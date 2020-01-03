@@ -1,7 +1,9 @@
 package rest
 
 import (
+	"strings"
 	"encoding/json"
+	"go.uber.org/zap"
 )
 
 type validators struct {
@@ -35,12 +37,20 @@ type validator struct {
 	MinSelfDelegation string `json:"min_self_delegation"`
 }
 
-func getValidators() validator {
+func getValidators(log *zap.Logger) validator {
 
 	var v validators
 
-	res := runRESTCommand("/staking/validators/" +OperAddr)
+	res, _ := runRESTCommand("/staking/validators/" +OperAddr)
 	json.Unmarshal(res, &v)
+
+        // log
+        if strings.Contains(string(res), "not found") {
+                // handle error
+                log.Fatal("REST-Server", zap.Bool("Success", false), zap.String("err", string(res),))
+        } else {
+                log.Info("REST-Server", zap.Bool("Success", true), zap.String("err", "nil"), zap.String("Get Data", "Validators"),)
+        }
 
 	return v.Result
 }

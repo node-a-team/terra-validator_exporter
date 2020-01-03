@@ -24,18 +24,16 @@ func NewGauge(nameSpace string, name string, help string) prometheus.Gauge {
 
 	return result
 }
-/*
-func NewCounterVec(nameSpace string, name string, help string) prometheus.CounterVec {
-        result := prometheus.NewCounterVec(
-                prometheus.GaugeOpts{
-                        Namespace: "" + nameSpace,
+
+func NewCounterVec(nameSpace string, name string, help string, labels []string) prometheus.CounterVec {
+	result := prometheus.NewCounterVec(
+                prometheus.CounterOpts{
+			Namespace: "" + nameSpace,
                         Name:      "" + name,
                         Help:      "" + help,
                 },
-		[]string("chainID", "moniker", "operAddr", "accAddr", "consHexAddr"),
-	)
-
-        return result
+                labels,
+        )
+	return *result
 }
-*/
 

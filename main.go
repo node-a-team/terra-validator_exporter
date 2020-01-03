@@ -2,13 +2,12 @@ package main
 
 import (
 	"fmt"
-	"go.uber.org/zap"
 	"net/http"
+	"os"
+	"go.uber.org/zap"
 
-//	"github.com/terra-project/core/types/util"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	core "github.com/terra-project/core/types"
-//	"github.com/tendermint/tendermint/libs/bech32"
 
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
@@ -21,9 +20,10 @@ var ()
 
 func main() {
 
-	log,_ := zap.NewDevelopment()
-	defer log.Sync()
+	port := "26661"
 
+	log,_ := zap.NewDevelopment()
+        defer log.Sync()
 
 	config := sdk.GetConfig()
 	config.SetCoinType(core.CoinType)
@@ -34,29 +34,22 @@ func main() {
 	config.Seal()
 
 
-
-
-
-
-
-
-
-
+	cfg.ConfigPath = os.Args[1]
 
 	cfg.Init()
 	rpc.OpenSocket(log)
 
 	http.Handle("/metrics", promhttp.Handler())
-	go exporter.Start()
+	go exporter.Start(log)
 
-//	log.Fatal(http.ListenAndServe(":8080", nil))
-
-	err := http.ListenAndServe(":26661", nil)
-	if err != nil {
+	err := http.ListenAndServe(":" +port, nil)
+	// log
+        if err != nil {
                 // handle error
-		log.Fatal("http.ListenAndServe",
-		    zap.String("Success", "false"),
-		    zap.String("err", fmt.Sprintf("%s", err)),
-		)
+                log.Fatal("HTTP Handle", zap.Bool("Success", false), zap.String("err", fmt.Sprint(err),))
+        } else {
+		log.Info("HTTP Handle", zap.Bool("Success", true), zap.String("err", "nil"), zap.String("Listen&Serve", "Prometheus Handler(Port: " +port +")"),)
         }
+
+//	utils.Log(err, "Http Handle", "", "")
 }

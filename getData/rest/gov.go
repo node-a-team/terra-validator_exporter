@@ -1,8 +1,9 @@
 package rest
 
 import (
+	"strings"
+	"go.uber.org/zap"
 	"encoding/json"
-//	utils "github.com/node-a-team/terra-validator_exporter/utils"
 )
 
 type govInfo struct {
@@ -42,16 +43,22 @@ type proposal struct {
 
 }
 
-func getGovInfo() govInfo {
+func getGovInfo(log *zap.Logger) govInfo {
 
 	var g gov
 	var gi govInfo
 
 	votingCount := 0
 
-        res := runRESTCommand("/gov/proposals")
+        res, _ := runRESTCommand("/gov/proposals")
         json.Unmarshal(res, &g)
-
+	// log
+        if strings.Contains(string(res), "not found") {
+                // handle error
+                log.Fatal("REST-Server", zap.Bool("Success", false), zap.String("err", string(res),))
+        } else {
+                log.Info("REST-Server", zap.Bool("Success", true), zap.String("err", "nil"), zap.String("Get Data", "Governance"),)
+        }
 
 	for _, value := range g.Result {
 		if value.Proposal_status == "VotingPeriod" {

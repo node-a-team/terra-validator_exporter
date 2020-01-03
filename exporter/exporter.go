@@ -3,6 +3,7 @@ package exporter
 import (
 	"fmt"
 	"time"
+	"go.uber.org/zap"
 
 	rpc "github.com/node-a-team/terra-validator_exporter/getData/rpc"
 	rest "github.com/node-a-team/terra-validator_exporter/getData/rest"
@@ -17,7 +18,7 @@ var (
 
 )
 
-func Start() {
+func Start(log *zap.Logger) {
 
 	gaugesNamespaceList := metric.GaugesNamespaceList
 
@@ -46,16 +47,12 @@ func Start() {
 	}
 
 
+	// labels
+	labels := []string{"chainId", "moniker", "operatorAddress", "accountAddress", "consHexAddress"}
+	gaugesForLabel := metric.NewCounterVec("exporter", "labels", "", labels)
 
-	gaugesForLabel := prometheus.NewCounterVec(
-		prometheus.CounterOpts{
-			Namespace: "exporter",
-			Name:      "labels",
-			Help:      "",
-		},
-		[]string{"chainId", "moniker", "operatorAddress", "accountAddress", "consHexAddress"},
-	)
 	prometheus.MustRegister(gaugesForLabel)
+
 
 	for {
 		func() {
@@ -73,45 +70,40 @@ func Start() {
 			currentBlockHeight := rpc.BlockHeight()
 
 			if previousBlockHeight != currentBlockHeight {
-//				fmt.Println(currentBlockHeight, previousBlockHeight)
-				restData, consHexAddr := rest.GetData(currentBlockHeight)
-				rpcData := rpc.GetData(currentBlockHeight, consHexAddr)
 
-				metric.SetMetric(currentBlockHeight, restData, rpcData)
+				log.Info("RPC-Server", zap.Bool("Success", true), zap.String("err", "nil"), zap.String("Get Data", "Block Height: " +fmt.Sprint(currentBlockHeight)))
+
+
+				restData, consHexAddr := rest.GetData(currentBlockHeight, log)
+				rpcData := rpc.GetData(currentBlockHeight, consHexAddr, log)
+
+				metric.SetMetric(currentBlockHeight, restData, rpcData, log)
 
 				metricData := metric.GetMetric()
 				denomList := metric.GetDenomList()
 
-
-				fmt.Printf("[blockHeight] %d\n", currentBlockHeight)
 
 				count := 0
 				for i := 0; i < len(denomList); i++ {
 
 					for _, value := range metricData.Validator.Account.Balances {
 						if value.Denom == denomList[i] {
-							fmt.Println(">> B: ", value.Denom, value.Amount)
 							gaugesDenom[count].Set(utils.StringToFloat64(value.Amount))
 							count++
 						}
 					}
 					for _, value := range metricData.Validator.Account.Commission {
                                                 if value.Denom == denomList[i] {
-                                                        fmt.Println(">> C: ", value.Denom, value.Amount)
 							gaugesDenom[count].Set(utils.StringToFloat64(value.Amount))
 							count++
                                                 }
                                         }
 					for _, value := range metricData.Validator.Account.Rewards {
                                                 if value.Denom == denomList[i] {
-                                                        fmt.Println(">> R: ", value.Denom, value.Amount)
 							gaugesDenom[count].Set(utils.StringToFloat64(value.Amount))
 							count++
                                                 }
                                         }
-
-					fmt.Println("\n")
-//					}
 				}
 
 

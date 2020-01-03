@@ -1,8 +1,9 @@
 package rest
 
 import (
-//	"fmt"
+	"go.uber.org/zap"
 	"os/exec"
+
 	utils "github.com/node-a-team/terra-validator_exporter/utils"
 )
 
@@ -38,30 +39,31 @@ func newRESTData(blockHeight int64) *RESTData {
 	return rd
 }
 
-func GetData(blockHeight int64) (*RESTData, string) {
+func GetData(blockHeight int64, log *zap.Logger) (*RESTData, string) {
 
-	accAddr := utils.GetAccAddrFromOperAddr(OperAddr)
+
+	accAddr := utils.GetAccAddrFromOperAddr(OperAddr, log)
 
 	rd := newRESTData(blockHeight)
-	rd.StakingPool = getStakingPool()
+	rd.StakingPool = getStakingPool(log)
 
-	rd.Validatorsets = getValidatorsets(blockHeight)
-	rd.Validators = getValidators()
-	rd.Delegations = getDelegations(accAddr)
-	rd.Balances = getBalances(accAddr)
-	rd.Rewards, rd.Commission = getRewardsAndCommisson()
+	rd.Validatorsets = getValidatorsets(blockHeight, log)
+	rd.Validators = getValidators(log)
+	rd.Delegations = getDelegations(accAddr, log)
+	rd.Balances = getBalances(accAddr, log)
+	rd.Rewards, rd.Commission = getRewardsAndCommisson(log)
 
-	rd.Oracle = getOracleMiss()
-	rd.Gov = getGovInfo()
+	rd.Oracle = getOracleMiss(log)
+	rd.Gov = getGovInfo(log)
 
-	consHexAddr := utils.Bech32AddrToHexAddr(rd.Validatorsets[rd.Validators.ConsPubKey][0])
+	consHexAddr := utils.Bech32AddrToHexAddr(rd.Validatorsets[rd.Validators.ConsPubKey][0], log)
 	return rd, consHexAddr
 }
 
-func runRESTCommand(str string) []uint8 {
+func runRESTCommand(str string) ([]uint8, error) {
         cmd := "curl -s -XGET " +Addr +str +" -H \"accept:application/json\""
-        out, _ := exec.Command("/bin/bash", "-c", cmd).Output()
+        out, err := exec.Command("/bin/bash", "-c", cmd).Output()
 //	fmt.Println(cmd)
 
-        return out
+        return out, err
 }
