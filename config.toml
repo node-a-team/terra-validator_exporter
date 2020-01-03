@@ -4,8 +4,8 @@ title = "TOML Document"
 
 [Servers]
 	[Servers.addr]
-	rpc = "15.164.30.221:26657"
-	rest = "15.164.30.221:1317"
+	rpc = "localhost:26657"
+	rest = "localhost:1317"
 
 [Validator]
 operatorAddr = "terravaloper1tusfpgvjrplqg2fm7wacy4slzjmnzswcfufuvp"
