@@ -20,8 +20,6 @@ var ()
 
 func main() {
 
-	port := "26661"
-
 	log,_ := zap.NewDevelopment()
         defer log.Sync()
 
@@ -36,7 +34,7 @@ func main() {
 
 	cfg.ConfigPath = os.Args[1]
 
-	cfg.Init()
+	port := cfg.Init()
 	rpc.OpenSocket(log)
 
 	http.Handle("/metrics", promhttp.Handler())
@@ -51,5 +49,4 @@ func main() {
 		log.Info("HTTP Handle", zap.Bool("Success", true), zap.String("err", "nil"), zap.String("Listen&Serve", "Prometheus Handler(Port: " +port +")"),)
         }
 
-//	utils.Log(err, "Http Handle", "", "")
 }

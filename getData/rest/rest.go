@@ -63,7 +63,6 @@ func GetData(blockHeight int64, log *zap.Logger) (*RESTData, string) {
 func runRESTCommand(str string) ([]uint8, error) {
         cmd := "curl -s -XGET " +Addr +str +" -H \"accept:application/json\""
         out, err := exec.Command("/bin/bash", "-c", cmd).Output()
-//	fmt.Println(cmd)
 
         return out, err
 }

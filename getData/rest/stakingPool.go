@@ -26,14 +26,16 @@ func getStakingPool(log *zap.Logger) stakingPool {
 
 	var sp stakingPool
 
-	res, _ := runRESTCommand("/staking/pool")
+	res, err := runRESTCommand("/staking/pool")
 	json.Unmarshal(res, &sp)
 
 	// log 
 	if strings.Contains(string(res), "not found") {
                 // handle error
                 log.Fatal("REST-Server", zap.Bool("Success", false), zap.String("err", string(res),))
-        } else {
+	} else if err != nil {
+                log.Fatal("REST-Server", zap.Bool("Success", false), zap.String("err", "Failed to connect to REST-Server"),)
+	} else {
                 log.Info("REST-Server", zap.Bool("Success", true), zap.String("err", "nil"), zap.String("Get Data", "Staking Pool"),)
         }
 
