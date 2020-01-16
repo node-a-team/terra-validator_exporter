@@ -5,6 +5,10 @@
 
 Prometheus exporter for Terra Validators
 
+## Introduction
+This exporter is for monitoring information which is not provided from Tendermint’s basic Prometheus exporter (localhost:26660), and other specific information monitoring purposes
+
+
 ## Collecting information list
 - blockHeight: Height of the current block
 - bondedTokens: Number of currently bonded Luna
@@ -41,8 +45,6 @@ Prometheus exporter for Terra Validators
 
 - labels: moniker, chainId, accountAddress, operatorAddress, consHexAddress, 
 
-## Introduction
-This exporter is for monitoring information which is not provided from Tendermint’s basic Prometheus exporter (localhost:26660), and other specific information monitoring purposes
 
 
 
