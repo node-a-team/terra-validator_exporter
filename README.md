@@ -95,7 +95,7 @@ listenPort = "26661"
 # Make log directory & file
 sudo mkdir /var/log/userLog  
 sudo touch /var/log/userLog/terra-validator_exporter.log  
-# user: iris
+# user: terra
 sudo chown terra:terra /var/log/userLog/terra-validator_exporter.log
 
 # $HOME: /data/terra
