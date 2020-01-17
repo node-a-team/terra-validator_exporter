@@ -126,3 +126,6 @@ sudo systemctl start terra-validator_exporter.service
 ## log
 tail -f /var/log/userLog/terra-validator_exporter.log
 ```
+
+## Example
+https://www.notion.so/wlsaud619/terra-validator_exporter-1e9c6cf1bdb0483180829676b533565b
